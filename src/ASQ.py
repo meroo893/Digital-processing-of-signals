@@ -2,6 +2,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 from collections import Counter, defaultdict
+import csv
 
 from typing import Dict
 
@@ -145,7 +146,7 @@ def compute_errors(signal, z_hat):
 if __name__ == '__main__':
     # Example data
     s = 4  # Number of sections (thresholds)
-    a = input('Enter your signal data separated by space ->')
+    a = input('Enter your signal data separated by space -> (Hit ENTER for default values)')
     if not a:
         a = '5 5 6 7 6 5 4 3 2 2'
     # input from the exercise -> 5 4 3 6 7 5 4 2 1 2
@@ -172,5 +173,13 @@ if __name__ == '__main__':
     # STEP 8: Calculating the quality measures
     error_values = compute_errors(data, z_hat)
 
+    with open('errors.csv', mode='w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(error_values.keys())
+
+        # Write the values (rows)
+        rows = zip(*error_values.values())
+        writer.writerows(rows)
+    print('error values saved to errors.csv')
     for key, value in error_values.items():
         print(f'{key} = {value}')
