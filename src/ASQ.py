@@ -45,6 +45,7 @@ def build_norm_hist(signal, thresholds):
     plt.xlim(left=0)
     plt.ylim(bottom=0)
     plt.legend()
+    plt.savefig('norm_distribution.pdf', format='pdf', bbox_inches='tight')
     # Show the plot
     plt.show()
 
@@ -117,6 +118,7 @@ def non_uniform_quantization_scale(thresholds, output_levels):
     plt.ylabel('Quantized Levels')
     plt.title('Non-uniform Quantization Scale with Projected Edges')
     plt.legend()
+    plt.savefig('NQU-scale.pdf', format='pdf', bbox_inches='tight')
     plt.show()
 
     return quan_scale
