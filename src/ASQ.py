@@ -94,15 +94,29 @@ def calculate_output_levels(h):
 
 def non_uniform_quantization_scale(thresholds, output_levels):
     quan_scale = defaultdict(int)
+
+    # Assign the quantized levels to each threshold range
     for i in range(1, len(thresholds)):
         for x in range(thresholds[i - 1], thresholds[i] + 1):
             if x == thresholds[i]:
                 x -= 0.00001
             quan_scale[x] = output_levels[i - 1]
 
+    # Plot the non-uniform quantization scale
     plt.plot(quan_scale.keys(), quan_scale.values(), label='Non-uniform quantization scale')
-    plt.xlim(left=0)
+
+    # Adding dashed lines for projection on x-axis and y-axis
+    for i in range(thresholds[0], thresholds[-1]):
+        plt.axvline(x=i, color='gray', linestyle='--', alpha=0.7)  # Vertical dashed lines (x-axis)
+    for level in output_levels:
+        plt.axhline(y=level, color='gray', linestyle='--', alpha=0.7)  # Horizontal dashed lines (y-axis)
+    #TODO: look at plt.vlines and plt.hlines; use them instead of axvline and axhline
+    plt.xlim(left=thresholds[0])
     plt.ylim(bottom=0)
+    plt.xlabel('Input Levels')
+    plt.ylabel('Quantized Levels')
+    plt.title('Non-uniform Quantization Scale with Projected Edges')
+    plt.legend()
     plt.show()
 
     return quan_scale
@@ -129,8 +143,9 @@ def compute_errors(signal, z_hat):
 if __name__ == '__main__':
     # Example data
     s = 4  # Number of sections (thresholds)
-    print("Enter your signal data separated by space -> ", end='')
-    a = input()
+    a = input('Enter your signal data separated by space ->')
+    if not a:
+        a = '5 5 6 7 6 5 4 3 2 2'
     # input from the exercise -> 5 4 3 6 7 5 4 2 1 2
     data = np.array([*map(int, a.split())])
 
