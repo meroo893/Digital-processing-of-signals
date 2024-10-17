@@ -38,12 +38,13 @@ def build_norm_hist(signal, thresholds):
         left, right = thresholds[i], thresholds[i+1]
         plt.fill_between(
             sorted_keys, sorted_values, where=((np.array(sorted_keys) >= left) & (np.array(sorted_keys) <= right)),
-            color=colors[i % len(colors)], alpha=0.3
+            color=colors[i % len(colors)], alpha=0.3, label=f'q{i+1}'
         )
 
     # Set x and y scales to start from 0
     plt.xlim(left=0)
     plt.ylim(bottom=0)
+    plt.legend()
     # Show the plot
     plt.show()
 
@@ -105,12 +106,11 @@ def non_uniform_quantization_scale(thresholds, output_levels):
     # Plot the non-uniform quantization scale
     plt.plot(quan_scale.keys(), quan_scale.values(), label='Non-uniform quantization scale')
 
-    # Adding dashed lines for projection on x-axis and y-axis
-    for i in range(thresholds[0], thresholds[-1]):
-        plt.axvline(x=i, color='gray', linestyle='--', alpha=0.7)  # Vertical dashed lines (x-axis)
-    for level in output_levels:
-        plt.axhline(y=level, color='gray', linestyle='--', alpha=0.7)  # Horizontal dashed lines (y-axis)
-    #TODO: look at plt.vlines and plt.hlines; use them instead of axvline and axhline
+    # Adding opaque grey lines for projection on x-axis and y-axis
+    plt.vlines(x=range(thresholds[0], thresholds[-1]), ymin=0, ymax=output_levels[-1],
+               linestyles=(0, (5, 5)), colors='grey', alpha=0.4)
+    plt.hlines(y=output_levels, xmin=0, xmax=thresholds[-1],
+               linestyles=(0, (5, 5)), colors='grey', alpha=0.4)
     plt.xlim(left=thresholds[0])
     plt.ylim(bottom=0)
     plt.xlabel('Input Levels')
@@ -159,7 +159,6 @@ if __name__ == '__main__':
 
     # STEP 3: Determine thresholds
     thresholds = determine_thresholds(h, s, p)
-
     # STEP 4: Plot the divided sections
     build_norm_hist(data, thresholds)
     # STEP 5: Calculating the output levels qr
