@@ -46,7 +46,7 @@ def build_norm_hist(signal, thresholds):
     plt.xlim(left=0)
     plt.ylim(bottom=0)
     plt.legend()
-    plt.savefig('norm_distribution.pdf', format='pdf', bbox_inches='tight')
+    plt.savefig('../artifacts/norm_distribution.pdf', format='pdf', bbox_inches='tight')
     # Show the plot
     plt.show()
 
@@ -119,7 +119,7 @@ def non_uniform_quantization_scale(thresholds, output_levels):
     plt.ylabel('Quantized Levels')
     plt.title('Non-uniform Quantization Scale with Projected Edges')
     plt.legend()
-    plt.savefig('NQU-scale.pdf', format='pdf', bbox_inches='tight')
+    plt.savefig('../artifacts/NQU-scale.pdf', format='pdf', bbox_inches='tight')
     plt.show()
 
     return quan_scale
@@ -173,13 +173,10 @@ if __name__ == '__main__':
     # STEP 8: Calculating the quality measures
     error_values = compute_errors(data, z_hat)
 
-    with open('errors.csv', mode='w', newline='') as csvfile:
+    with open('../artifacts/ASQerrors.csv', mode='w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(error_values.keys())
-
-        # Write the values (rows)
-        rows = zip(*error_values.values())
-        writer.writerows(rows)
-    print('error values saved to errors.csv')
+        writer.writerow(error_values.values())
+    print('error values saved to ASQerrors.csv')
     for key, value in error_values.items():
         print(f'{key} = {value}')
