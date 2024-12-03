@@ -11,7 +11,7 @@ def ceil_to_power_of_two(num):
     return 2 ** math.ceil(math.log(num, 2))
 
 
-def build_norm_hist(signal, thresholds):
+def build_norm_hist(signal, thresholds=()):
     # ----- STEP 1: CREATING THE NORMALIZED HISTOGRAM -> DOTS CONNECTED
     # Use Counter to count occurrences of each value
     h = Counter(signal)
@@ -153,7 +153,7 @@ if __name__ == '__main__':
     data = np.array([*map(int, a.split())])
 
     # STEP 1: Build the histogram
-    h = build_norm_hist(data, thresholds=[])
+    h = build_norm_hist(data)
 
     # STEP 2: Compute c and p
     c = math.log(s, 2)
